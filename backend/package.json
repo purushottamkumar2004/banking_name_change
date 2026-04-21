@@ -1,0 +1,37 @@
+{
+  "name": "name-change-backend",
+  "version": "1.0.0",
+  "description": "Intelligent Account Servicing - Name Change Workflow Backend",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "dev:mock": "cross-env MOCK_PIPELINE=true nodemon src/server.js",
+    "start": "node src/server.js",
+    "migrate": "node src/db/migrate.js",
+    "seed": "node src/db/seed.js",
+    "test": "cross-env MOCK_PIPELINE=true node tests/integration.test.js"
+  },
+  "dependencies": {
+    "@google-cloud/documentai": "^8.0.0",
+    "@langchain/community": "^0.3.0",
+    "@langchain/core": "^0.3.0",
+    "@langchain/google-genai": "^0.1.0",
+    "@langchain/langgraph": "^0.2.0",
+    "@aws-sdk/client-s3": "^3.0.0",
+    "@aws-sdk/s3-request-presigner": "^3.0.0",
+    "chromadb": "^1.9.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.0",
+    "express-async-errors": "^3.1.1",
+    "multer": "^2.0.0",
+    "mysql2": "^3.6.0",
+    "uuid": "^9.0.0",
+    "langsmith": "^0.1.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0",
+    "cross-env": "^7.0.3"
+  }
+}

@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # 1. MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: name-change-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: name_change_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. MinIO Object Storage
+  minio:
+    image: minio/minio:latest
+    container_name: name-change-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"   # S3 API
+      - "9001:9001"   # MinIO Console UI
+    volumes:
+      - minio_data:/data
+
+  # 3. MinIO Initialization (Creates bucket)
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+        sleep 5 &&
+        mc alias set local http://minio:9000 minioadmin minioadmin &&
+        mc mb --ignore-existing local/name-change-docs &&
+        mc anonymous set download local/name-change-docs &&
+        echo 'MinIO bucket ready'
+      "
+
+  # 4. Chroma Vector Database
+  chroma:
+    image: chromadb/chroma:latest
+    container_name: name-change-chroma
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+
+# All volumes defined in ONE block at the end
+volumes:
+  mysql_data:
+  minio_data:
+  chroma_data:

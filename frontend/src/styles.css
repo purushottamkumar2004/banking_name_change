@@ -1,0 +1,70 @@
+/* Global styles — DM Sans + minimal design system */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', monospace;
+
+  /* Palette */
+  --ink-900:  #0f1117;
+  --ink-700:  #2d3142;
+  --ink-500:  #5c6070;
+  --ink-300:  #a0a4b0;
+  --ink-100:  #e8eaf0;
+  --ink-50:   #f4f5f8;
+
+  --blue-700: #1a3fcc;
+  --blue-500: #2d5be3;
+  --blue-100: #e6ebff;
+  --blue-50:  #f0f3ff;
+
+  --green-600: #177a4e;
+  --green-100: #d6f0e4;
+  --green-50:  #f0faf6;
+
+  --amber-600: #b45309;
+  --amber-100: #fef3c7;
+  --amber-50:  #fffbeb;
+
+  --red-600:  #c0392b;
+  --red-100:  #fde8e6;
+  --red-50:   #fff5f4;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --shadow-sm: 0 1px 3px rgba(15,17,23,0.08), 0 1px 2px rgba(15,17,23,0.04);
+  --shadow-md: 0 4px 16px rgba(15,17,23,0.10), 0 1px 4px rgba(15,17,23,0.06);
+  --shadow-lg: 0 8px 32px rgba(15,17,23,0.12), 0 2px 8px rgba(15,17,23,0.06);
+}
+
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--ink-50);
+  color: var(--ink-700);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+a { color: var(--blue-500); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+button {
+  font-family: var(--font-sans);
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+input, select, textarea {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--ink-200); border-radius: 3px; }
