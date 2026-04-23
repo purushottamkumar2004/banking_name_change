@@ -1,0 +1,56 @@
+name: Deploy to Render & Vercel
+
+on:
+  push:
+    branches:
+      - feature/deployment-vercel-render
+      - main
+
+jobs:
+  render-deploy:
+    name: Deploy Backend to Render
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/feature/deployment-vercel-render'
+    steps:
+      - name: Trigger Render Deployment
+        run: |
+          curl --request POST \
+            --url https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_DEPLOY_KEY }} \
+            --header 'Content-Type: application/json'
+        continue-on-error: true
+
+  vercel-deploy:
+    name: Deploy Frontend to Vercel
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/feature/deployment-vercel-render'
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./frontend
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+
+  test:
+    name: Test Deployment
+    needs: [render-deploy, vercel-deploy]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/feature/deployment-vercel-render'
+    steps:
+      - name: Wait for services to be ready
+        run: sleep 30
+
+      - name: Test Backend Health
+        run: |
+          curl -f https://name-change-backend.onrender.com/api/requests || exit 1
+
+      - name: Test Frontend Availability
+        run: |
+          curl -f https://name-change-frontend.vercel.app || exit 1
+
+      - name: Notify Success
+        run: echo "✅ Deployment successful! Services are healthy."
