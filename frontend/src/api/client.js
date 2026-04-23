@@ -1,8 +1,11 @@
 // frontend/src/api/client.js
 import axios from 'axios';
 
+// Use environment variable for production, or relative path for development
+const BASE_URL = import.meta.env.VITE_API_URL || '/api';
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: BASE_URL,
   timeout: 30000,
 });
 

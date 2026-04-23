@@ -1,0 +1,46 @@
+services:
+  - type: web
+    name: name-change-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm run dev
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: DB_HOST
+        scope: shared
+      - key: DB_PORT
+        value: 3306
+      - key: DB_USER
+        scope: shared
+      - key: DB_PASSWORD
+        scope: shared
+      - key: DB_NAME
+        value: name_change_db
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        scope: shared
+      - key: GOOGLE_DOCUMENT_AI_PROCESSOR_ID
+        scope: shared
+      - key: GOOGLE_DOCUMENT_AI_PROJECT_ID
+        scope: shared
+      - key: GOOGLE_DOCUMENT_AI_LOCATION
+        value: us
+      - key: GEMINI_API_KEY
+        scope: shared
+      - key: LANGCHAIN_TRACING_V2
+        value: "true"
+      - key: LANGCHAIN_API_KEY
+        scope: shared
+      - key: LANGCHAIN_PROJECT
+        value: name-change-verification
+      - key: S3_ENDPOINT
+        scope: shared
+      - key: S3_ACCESS_KEY
+        scope: shared
+      - key: S3_SECRET_KEY
+        scope: shared
+      - key: S3_BUCKET
+        value: name-change-docs
